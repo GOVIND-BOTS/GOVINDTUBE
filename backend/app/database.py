@@ -1,7 +1,9 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from .config import settings
+
 client = None
 database = None
+
 
 async def connect_database():
     global client, database
@@ -10,12 +12,16 @@ async def connect_database():
     database = client[settings.mongodb_database]
     await database.users.create_index("email", unique=True)
     await database.videos.create_index([("status", 1), ("created_at", -1)])
+    await database.videos.create_index([("owner_id", 1), ("created_at", -1)])
+    await database.videos.create_index([("status", 1), ("title", 1)])
+
 
 async def close_database():
     global client, database
     if client:
         client.close()
     client = database = None
+
 
 def get_database():
     if database is None:
