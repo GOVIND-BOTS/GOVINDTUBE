@@ -1,5 +1,7 @@
 from functools import lru_cache
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     app_name: str = "GOVIND TUBE API"
@@ -11,12 +13,26 @@ class Settings(BaseSettings):
     api_cors_origins: str = "http://localhost:3000"
     upload_dir: str = "./uploads"
     max_upload_size_mb: int = 1024
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
+
     @property
     def cors_origins(self):
-        return [x.strip() for x in self.api_cors_origins.split(",") if x.strip()]
+        return [origin.strip() for origin in self.api_cors_origins.split(",") if origin.strip()]
+
+    def validate_production_settings(self):
+        if self.environment.lower() == "production":
+            if len(self.jwt_secret) < 32 or self.jwt_secret == "development-only-change-this-secret":
+                raise ValueError("Production requires a private JWT_SECRET of at least 32 characters")
+            if not self.api_cors_origins.strip():
+                raise ValueError("Production requires explicit API_CORS_ORIGINS")
+
 
 @lru_cache
 def get_settings():
-    return Settings()
+    value = Settings()
+    value.validate_production_settings()
+    return value
+
+
 settings = get_settings()
