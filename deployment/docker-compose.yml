@@ -1,0 +1,22 @@
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    ports: ["27017:27017"]
+    volumes: [govind_tube_mongo:/data/db]
+    healthcheck:
+      test: ["CMD","mongosh","--quiet","--eval","db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build: ../backend
+    restart: unless-stopped
+    env_file: ../.env
+    ports: ["8000:8000"]
+    volumes: ["../backend/uploads:/app/uploads"]
+    depends_on:
+      mongodb:
+        condition: service_healthy
+volumes:
+  govind_tube_mongo:
