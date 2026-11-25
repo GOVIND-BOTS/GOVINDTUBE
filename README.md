@@ -15,6 +15,22 @@ An original video-sharing platform with a custom neon-purple identity. This repo
 - Android sign-in/register, secure token storage, creator channel setup, video picker/upload and native playback
 - Responsive dark-purple brand UI and a draft privacy-policy page
 
+## Railway backend deployment
+
+The repository root contains a Railway-ready `Dockerfile` and `railway.toml`. The service builds the FastAPI app from `backend/`, listens on Railway's injected `PORT`, and uses `/health` as its deployment health check.
+
+1. In Railway, create a project and choose **Deploy from GitHub**, then connect `GOVIND-BOTS/-GOVIND-TUBE`.
+2. Use the repository root as the service root directory (do not set it to `/backend`); Railway will detect the root `Dockerfile`.
+3. Add a MongoDB service/plugin or use an external MongoDB provider. Copy its private connection URI into the backend service variable `MONGODB_URL`; do not commit it.
+4. Add backend variables: `ENVIRONMENT=production`, `MONGODB_URL`, `MONGODB_DATABASE=govind_tube`, `JWT_SECRET` (a unique random value of at least 32 characters), `API_CORS_ORIGINS` (the exact HTTPS website origin, comma-separated if needed), `UPLOAD_DIR=/app/uploads`, and `MAX_UPLOAD_SIZE_MB=1024`.
+5. Add a Railway Volume mounted at `/app/uploads` if using the current local-disk upload adapter. Without a persistent volume, uploaded media can be lost on redeploy/restart. This is a temporary development-compatible setup, not the final scalable media architecture.
+6. Deploy, then generate a public domain in the backend service's Networking settings. Verify `https://YOUR-DOMAIN/health` returns HTTP 200 and `https://YOUR-DOMAIN/docs` opens.
+7. Set the website's `NEXT_PUBLIC_API_URL` to the HTTPS API origin and Android's `EXPO_PUBLIC_API_URL` to the same HTTPS API origin. Redeploy both clients after setting their variables.
+
+Railway reads the service variables at runtime. Never put MongoDB credentials or the JWT secret in GitHub, frontend variables, or Android builds. Railway health checks validate a deployment before routing traffic; they are not continuous uptime monitoring.
+
+Official Railway guides: [GitHub deployment](https://docs.railway.com/quick-start), [Docker/build configuration](https://docs.railway.com/builds/build-configuration), [variables](https://docs.railway.com/variables), [health checks](https://docs.railway.com/deployments/healthchecks).
+
 ## Local setup
 
 1. Copy `.env.example` to `.env`; set a long random JWT secret.
