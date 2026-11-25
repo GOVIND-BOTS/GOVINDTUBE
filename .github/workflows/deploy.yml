@@ -1,0 +1,42 @@
+name: GOVIND TUBE Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: govind-tube-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy backend to Railway
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install --global @railway/cli
+
+      - name: Deploy GOVIND TUBE
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
+          RAILWAY_SERVICE_ID: ${{ vars.RAILWAY_SERVICE_ID }}
+          RAILWAY_ENVIRONMENT_ID: ${{ vars.RAILWAY_ENVIRONMENT_ID }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::Add RAILWAY_TOKEN in GitHub Actions secrets."
+            exit 1
+          fi
+          if [ -z "$RAILWAY_PROJECT_ID" ] || [ -z "$RAILWAY_SERVICE_ID" ] || [ -z "$RAILWAY_ENVIRONMENT_ID" ]; then
+            echo "::error::Add RAILWAY_PROJECT_ID, RAILWAY_SERVICE_ID and RAILWAY_ENVIRONMENT_ID in GitHub Actions variables."
+            exit 1
+          fi
+          railway up --ci --detach --project "$RAILWAY_PROJECT_ID" --service "$RAILWAY_SERVICE_ID" --environment "$RAILWAY_ENVIRONMENT_ID"
