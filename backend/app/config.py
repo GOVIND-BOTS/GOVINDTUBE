@@ -26,6 +26,8 @@ class Settings(BaseSettings):
                 raise ValueError("Production requires a private JWT_SECRET of at least 32 characters")
             if not self.api_cors_origins.strip():
                 raise ValueError("Production requires explicit API_CORS_ORIGINS")
+            if "localhost" in self.mongodb_url or "127.0.0.1" in self.mongodb_url:
+                raise ValueError("Production requires a reachable MongoDB connection URL")
 
 
 @lru_cache
