@@ -124,7 +124,7 @@ export default function Home() {
             {loading && <div className="empty"><div>◌</div><h3>Finding something good…</h3><p>Loading the latest videos.</p></div>}
           </div>
           <div className="creator" id="create"><div><small>CREATOR MODE</small><h2>{channel ? channel.display_name : "Your story deserves a screen."}</h2><p>{channel ? "@" + channel.username + " · " + channel.subscribers + " subscribers" : "Build your channel and share your perspective."}</p></div><button onClick={() => { setFormError(""); setDialog(token ? (channel ? "upload" : "channel") : "register"); }}>{channel ? <UploadCloud /> : <UserRound />} {channel ? "Upload a video" : "Create your channel"}</button></div>
-          <footer>© 2026 GOVIND TUBE <span>Made for the curious.</span></footer>
+          <footer>© 2026 GOVIND TUBE <span>Made for the curious. · <a href="/privacy">Privacy policy</a></span></footer>
         </section>
       </div>
 
