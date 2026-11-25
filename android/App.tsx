@@ -8,6 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import { VideoView, useVideoPlayer } from "expo-video";
 
 const API = (process.env.EXPO_PUBLIC_API_URL || "http://10.0.2.2:8000").replace(/\/$/, "");
+const PRIVACY_URL = process.env.EXPO_PUBLIC_PRIVACY_URL || "";
 type User = { id: string; name: string; email: string };
 type Video = { id: string; title: string; description?: string; owner_name?: string; views?: number; stream_url: string };
 type Channel = { username: string; display_name: string; subscribers: number };
@@ -165,6 +166,7 @@ export default function App() {
       {screen === "watch" && selected && <ScrollView style={styles.formWrap}><Player video={selected} onClose={() => { setSelected(null); setScreen("home"); }} /></ScrollView>}
 
       <View style={styles.nav}><Pressable onPress={() => setScreen("home")}><Text style={styles.navText}>⌂{"\n"}Home</Text></Pressable><Pressable onPress={() => setScreen("home")}><Text style={styles.navText}>⌕{"\n"}Explore</Text></Pressable><Pressable onPress={() => setScreen(token ? (channel ? "upload" : "channel") : "auth")}><Text style={styles.navText}>＋{"\n"}Create</Text></Pressable><Pressable onPress={() => setScreen(user ? "channel" : "auth")}><Text style={styles.navText}>◉{"\n"}Account</Text></Pressable></View>
+      <Pressable style={styles.privacyLink} onPress={() => PRIVACY_URL ? Linking.openURL(PRIVACY_URL) : Alert.alert("Privacy policy", "Set EXPO_PUBLIC_PRIVACY_URL to the published GOVIND TUBE privacy policy URL before release.")}><Text style={styles.privacyText}>Privacy policy</Text></Pressable>
       {busy && <View style={styles.loading}><ActivityIndicator color="#d8a4ff" /></View>}
     </SafeAreaView>
   );
@@ -202,5 +204,6 @@ const styles = StyleSheet.create({
   playerBox: { paddingTop: 15 },
   video: { width: "100%", height: 230, backgroundColor: "#000", borderRadius: 12 },
   secondary: { backgroundColor: "#30203f", alignSelf: "flex-start", borderRadius: 8, padding: 12, marginTop: 16 },
-  loading: { position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "#0005", alignItems: "center", justifyContent: "center" },\n  privacyLink: { alignItems: "center", paddingVertical: 5 },\n  privacyText: { color: "#887a99", fontSize: 10 },
+  loading: { position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "#0005", alignItems: "center", justifyContent: "center" },
+  privacyLink: { alignItems: "center", paddingVertical: 5 },\n  privacyText: { color: "#887a99", fontSize: 10 },
 });
