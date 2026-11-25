@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
 from .database import close_database, connect_database
-from .routes import auth, videos
+from .routes import auth, channels, videos
 
 
 @asynccontextmanager
@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     await close_database()
 
 
-app = FastAPI(title=settings.app_name, version="0.2.0", lifespan=lifespan)
+app = FastAPI(title=settings.app_name, version="0.3.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -25,6 +25,7 @@ app.add_middleware(
     expose_headers=["Accept-Ranges", "Content-Range", "Content-Length", "ETag"],
 )
 app.include_router(auth.router, prefix="/api/v1")
+app.include_router(channels.router, prefix="/api/v1")
 app.include_router(videos.router, prefix="/api/v1")
 
 
