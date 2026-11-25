@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  ActivityIndicator, Alert, FlatList, KeyboardAvoidingView, Platform,
+  ActivityIndicator, Alert, FlatList, KeyboardAvoidingView, Linking, Platform,
   Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, View,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
@@ -202,5 +202,5 @@ const styles = StyleSheet.create({
   playerBox: { paddingTop: 15 },
   video: { width: "100%", height: 230, backgroundColor: "#000", borderRadius: 12 },
   secondary: { backgroundColor: "#30203f", alignSelf: "flex-start", borderRadius: 8, padding: 12, marginTop: 16 },
-  loading: { position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "#0005", alignItems: "center", justifyContent: "center" },
+  loading: { position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "#0005", alignItems: "center", justifyContent: "center" },\n  privacyLink: { alignItems: "center", paddingVertical: 5 },\n  privacyText: { color: "#887a99", fontSize: 10 },
 });
