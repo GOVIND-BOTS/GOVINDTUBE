@@ -14,6 +14,8 @@ async def connect_database():
     await database.videos.create_index([("status", 1), ("created_at", -1)])
     await database.videos.create_index([("owner_id", 1), ("created_at", -1)])
     await database.videos.create_index([("status", 1), ("title", 1)])
+    await database.channels.create_index("user_id", unique=True)
+    await database.channels.create_index("username", unique=True)
 
 
 async def close_database():
