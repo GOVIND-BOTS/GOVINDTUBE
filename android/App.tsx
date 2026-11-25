@@ -205,5 +205,6 @@ const styles = StyleSheet.create({
   video: { width: "100%", height: 230, backgroundColor: "#000", borderRadius: 12 },
   secondary: { backgroundColor: "#30203f", alignSelf: "flex-start", borderRadius: 8, padding: 12, marginTop: 16 },
   loading: { position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "#0005", alignItems: "center", justifyContent: "center" },
-  privacyLink: { alignItems: "center", paddingVertical: 5 },\n  privacyText: { color: "#887a99", fontSize: 10 },
+  privacyLink: { alignItems: "center", paddingVertical: 5 },
+  privacyText: { color: "#887a99", fontSize: 10 },
 });
