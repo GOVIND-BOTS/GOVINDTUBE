@@ -1,1 +1,16 @@
-{"expo":{"name":"GOVIND TUBE","slug":"govind-tube","version":"0.1.0","orientation":"portrait","userInterfaceStyle":"dark","android":{"package":"com.govindbots.govindtube","versionCode":1}}}
+{
+  "expo": {
+    "name": "GOVIND TUBE",
+    "slug": "govind-tube",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "scheme": "govindtube",
+    "android": {
+      "package": "com.govindbots.govindtube",
+      "versionCode": 2,
+      "permissions": ["INTERNET"]
+    },
+    "plugins": ["expo-document-picker", "expo-secure-store", "expo-video"]
+  }
+}
